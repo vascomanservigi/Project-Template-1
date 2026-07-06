@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberGuard - Home</title>
+  <title>Contatti - CyberGuard</title>
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -31,7 +31,7 @@
           </div>
         </a>
         <nav class="main-nav" id="main-nav">
-          <a href="/" class="active">Home</a>
+          <a href="/">Home</a>
           <a href="/chi-siamo">Chi siamo</a>
           <a href="/progetto">Il progetto</a>
           <a href="/funzionalita">Funzionalità</a>
@@ -49,54 +49,76 @@
     <div class="container">
       <span>Ti trovi in:</span>
       <a href="/">Home</a>
+      <span>Contatti</span>
     </div>
   </div>
 
   <main>
-    <section class="hero-home">
+    <section class="page-header">
       <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <h1>Impara a proteggerti nel mondo digitale</h1>
-            <p>CyberGuard è una piattaforma educativa sviluppata per sensibilizzare studenti e cittadini sulle tematiche della cybersecurity. Attraverso percorsi formativi interattivi, imparerai a riconoscere le minacce online e a proteggere la tua vita digitale.</p>
-            <div class="hero-actions">
-              <a href="/progetto" class="btn btn-primary">Scopri il progetto</a>
-              <a href="/funzionalita" class="btn btn-outline" style="color:white;border-color:white">Esplora le funzionalità</a>
-            </div>
-          </div>
-          <div class="hero-stats">
-            <div class="stat-box">
-              <strong>50+</strong>
-              <span>Quiz interattivi</span>
-            </div>
-            <div class="stat-box">
-              <strong>12</strong>
-              <span>Moduli formativi</span>
-            </div>
-            <div class="stat-box">
-              <strong>6</strong>
-              <span>Aree tematiche</span>
-            </div>
-          </div>
-        </div>
+        <h1>Contatti</h1>
+        <p>Per informazioni, suggerimenti o collaborazioni.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <h2 class="section-title">In evidenza</h2>
-        <p class="section-subtitle">Le principali aree tematiche affrontate dalla piattaforma CyberGuard.</p>
-        <div class="grid-3" id="features-preview"></div>
-      </div>
-    </section>
+        <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:3rem;align-items:start">
+          <div>
+            <h2 class="section-title">Come raggiungerci</h2>
+            <p class="section-subtitle" style="margin-bottom:2rem">Puoi contattarci tramite i seguenti canali o compilando il modulo a fianco.</p>
 
-    <section class="section section-alt">
-      <div class="container">
-        <h2 class="section-title">Ultime news</h2>
-        <p class="section-subtitle">Aggiornamenti e novità dal team CyberGuard.</p>
-        <div class="news-list" id="news-preview"></div>
-        <div class="mt-2">
-          <a href="/news" class="btn btn-outline">Vedi tutte le news</a>
+            <div class="card mb-1">
+              <div style="display:flex;gap:1rem;align-items:flex-start">
+                <i data-lucide="mail" style="width:24px;height:24px;color:var(--primary);flex-shrink:0"></i>
+                <div>
+                  <strong>Email</strong><br>
+                  <span id="contact-email">cyberguard@example.it</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card mb-1">
+              <div style="display:flex;gap:1rem;align-items:flex-start">
+                <i data-lucide="map-pin" style="width:24px;height:24px;color:var(--primary);flex-shrink:0"></i>
+                <div>
+                  <strong>Sede</strong><br>
+                  <span id="contact-address">Bologna, Italia</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div style="display:flex;gap:1rem;align-items:flex-start">
+                <i data-lucide="calendar" style="width:24px;height:24px;color:var(--primary);flex-shrink:0"></i>
+                <div>
+                  <strong>Periodo</strong><br>
+                  <span>3-10 Luglio 2026</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-bottom:1.5rem">Invia un messaggio</h3>
+            <form id="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contact-name">Nome *</label>
+                  <input type="text" id="contact-name" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label for="contact-email">Email *</label>
+                  <input type="email" id="contact-email" class="form-input" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="contact-message">Messaggio *</label>
+                <textarea id="contact-message" class="form-input" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Invia messaggio</button>
+            </form>
+          </div>
         </div>
       </div>
     </section>
@@ -140,26 +162,5 @@
   </footer>
 
   <script src="/js/main.js"></script>
-  <script>
-    async function loadHome() {
-      try {
-        const [features, news] = await Promise.all([
-          fetchAPI('/api/features'),
-          fetchAPI('/api/news')
-        ])
-
-        const featuresPreview = document.getElementById('features-preview')
-        featuresPreview.innerHTML = features.slice(0, 3).map(createFeatureCard).join('')
-
-        const newsPreview = document.getElementById('news-preview')
-        newsPreview.innerHTML = news.slice(0, 2).map(createNewsCard).join('')
-
-        lucide.createIcons()
-      } catch (err) {
-        console.error('Errore caricamento home:', err)
-      }
-    }
-    document.addEventListener('DOMContentLoaded', loadHome)
-  </script>
 </body>
 </html>

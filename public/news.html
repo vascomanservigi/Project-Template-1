@@ -36,7 +36,7 @@
           <a href="/progetto">Il progetto</a>
           <a href="/funzionalita">Funzionalità</a>
           <a href="/risorse">Risorse</a>
-          <a href="/news">News</a>
+          <a href="/news" class="active">News</a>
         </nav>
         <button class="nav-toggle" aria-label="Menu">
           <span></span><span></span><span></span>
@@ -49,30 +49,57 @@
     <div class="container">
       <span>Ti trovi in:</span>
       <a href="/">Home</a>
-      <span>/</span>
-      <a href="/news">News</a>
-      <span id="breadcrumb-title"></span>
+      <span>News</span>
     </div>
   </div>
 
-  <main class="section">
-    <div class="container">
-      <article style="max-width:800px;margin:0 auto">
-        <header style="margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--gray-200)">
-          <div class="news-date" id="article-date"></div>
-          <h1 class="section-title" id="article-title" style="font-size:2rem"></h1>
-        </header>
-        <div id="article-content" style="font-size:1.05rem;line-height:1.8;color:var(--gray-600)"></div>
-        <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--gray-200)">
-          <a href="/news" class="btn btn-outline">← Torna alle news</a>
-        </div>
-      </article>
-    </div>
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>News e aggiornamenti</h1>
+        <p>Le ultime novità dal mondo CyberGuard.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="news-list" id="news-list"></div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-bottom" style="border:none;padding:0">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo"><i data-lucide="shield-check"></i><span>CyberGuard</span></div>
+          <p>Piattaforma educativa per la cybersecurity, sviluppata durante il MAST Summer School 2026.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Link utili</h4>
+          <ul>
+            <li><a href="/chi-siamo">Chi siamo</a></li>
+            <li><a href="/progetto">Il progetto</a></li>
+            <li><a href="/funzionalita">Funzionalità</a></li>
+            <li><a href="/risorse">Risorse</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Servizi</h4>
+          <ul>
+            <li><a href="/news">News</a></li>
+            <li><a href="/contatti">Contatti</a></li>
+            <li><a href="/admin">Area riservata</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contatti</h4>
+          <ul>
+            <li><a href="mailto:cyberguard@example.it">cyberguard@example.it</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
         <p>© 2026 CyberGuard - MAST Summer School 2026</p>
       </div>
     </div>
@@ -81,18 +108,17 @@
   <script src="/js/main.js"></script>
   <script>
     async function loadNews() {
-      const id = window.location.pathname.split('/').pop()
       try {
-        const news = await fetchAPI(`/api/news/${id}`)
-        document.title = `${news.title} - CyberGuard`
-        document.getElementById('article-title').textContent = news.title
-        document.getElementById('breadcrumb-title').textContent = ` / ${news.title.substring(0, 30)}${news.title.length > 30 ? '...' : ''}`
-        document.getElementById('article-date').textContent = formatDate(news.created_at)
-        document.getElementById('article-content').innerHTML = news.content.split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom:1.5rem">${escapeHtml(p)}</p>`).join('')
+        const news = await fetchAPI('/api/news')
+        const container = document.getElementById('news-list')
+        if (news.length === 0) {
+          container.innerHTML = '<p style="color:var(--gray-500)">Nessuna news al momento.</p>'
+        } else {
+          container.innerHTML = news.map(createNewsCard).join('')
+        }
         lucide.createIcons()
       } catch (err) {
-        document.getElementById('article-title').textContent = 'News non trovata'
-        document.getElementById('article-content').innerHTML = '<p>La news richiesta non esiste o è stata rimossa.</p><p style="margin-top:1rem"><a href="/news" class="btn btn-primary">Torna alle news</a></p>'
+        console.error('Errore caricamento news:', err)
       }
     }
     document.addEventListener('DOMContentLoaded', loadNews)

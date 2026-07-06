@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberGuard - Home</title>
+  <title>Risorse - CyberGuard</title>
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -31,11 +31,11 @@
           </div>
         </a>
         <nav class="main-nav" id="main-nav">
-          <a href="/" class="active">Home</a>
+          <a href="/">Home</a>
           <a href="/chi-siamo">Chi siamo</a>
           <a href="/progetto">Il progetto</a>
           <a href="/funzionalita">Funzionalità</a>
-          <a href="/risorse">Risorse</a>
+          <a href="/risorse" class="active">Risorse</a>
           <a href="/news">News</a>
         </nav>
         <button class="nav-toggle" aria-label="Menu">
@@ -49,54 +49,64 @@
     <div class="container">
       <span>Ti trovi in:</span>
       <a href="/">Home</a>
+      <span>Risorse</span>
     </div>
   </div>
 
   <main>
-    <section class="hero-home">
+    <section class="page-header">
       <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <h1>Impara a proteggerti nel mondo digitale</h1>
-            <p>CyberGuard è una piattaforma educativa sviluppata per sensibilizzare studenti e cittadini sulle tematiche della cybersecurity. Attraverso percorsi formativi interattivi, imparerai a riconoscere le minacce online e a proteggere la tua vita digitale.</p>
-            <div class="hero-actions">
-              <a href="/progetto" class="btn btn-primary">Scopri il progetto</a>
-              <a href="/funzionalita" class="btn btn-outline" style="color:white;border-color:white">Esplora le funzionalità</a>
-            </div>
-          </div>
-          <div class="hero-stats">
-            <div class="stat-box">
-              <strong>50+</strong>
-              <span>Quiz interattivi</span>
-            </div>
-            <div class="stat-box">
-              <strong>12</strong>
-              <span>Moduli formativi</span>
-            </div>
-            <div class="stat-box">
-              <strong>6</strong>
-              <span>Aree tematiche</span>
-            </div>
-          </div>
-        </div>
+        <h1>Risorse</h1>
+        <p>Documenti, link utili e materiali per approfondire la cybersecurity.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
-        <h2 class="section-title">In evidenza</h2>
-        <p class="section-subtitle">Le principali aree tematiche affrontate dalla piattaforma CyberGuard.</p>
-        <div class="grid-3" id="features-preview"></div>
+        <h2 class="section-title">Materiali e link</h2>
+        <p class="section-subtitle">Risorse selezionate per approfondire le tematiche della cybersecurity.</p>
+        <div class="grid-2" id="resources-grid"></div>
       </div>
     </section>
 
     <section class="section section-alt">
       <div class="container">
-        <h2 class="section-title">Ultime news</h2>
-        <p class="section-subtitle">Aggiornamenti e novità dal team CyberGuard.</p>
-        <div class="news-list" id="news-preview"></div>
-        <div class="mt-2">
-          <a href="/news" class="btn btn-outline">Vedi tutte le news</a>
+        <h2 class="section-title">Link esterni</h2>
+        <p class="section-subtitle">Siti e organizzazioni di riferimento nel settore della cybersecurity.</p>
+
+        <div class="grid-2">
+          <div class="resource-card">
+            <div class="resource-icon"><i data-lucide="external-link"></i></div>
+            <div class="resource-content">
+              <h3>Cert-Italia</h3>
+              <p>Il Computer Emergency Response Team italiano per la gestione degli incidenti informatici.</p>
+              <a href="https://www.cert Italia.it" target="_blank">Visita il sito →</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon"><i data-lucide="external-link"></i></div>
+            <div class="resource-content">
+              <h3>OWASP</h3>
+              <p>Open Web Application Security Project: risorse sulla sicurezza delle applicazioni web.</p>
+              <a href="https://owasp.org" target="_blank">Visita il sito →</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon"><i data-lucide="external-link"></i></div>
+            <div class="resource-content">
+              <h3>Have I Been Pwned</h3>
+              <p>Verifica se la tua email è stata coinvolta in una violazione di dati.</p>
+              <a href="https://haveibeenpwned.com" target="_blank">Visita il sito →</a>
+            </div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon"><i data-lucide="external-link"></i></div>
+            <div class="resource-content">
+              <h3>Privacy Italia</h3>
+              <p>Informazioni e risorse sulla protezione dei dati personali in Italia.</p>
+              <a href="https://www.garanteprivacy.it" target="_blank">Visita il sito →</a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -141,25 +151,16 @@
 
   <script src="/js/main.js"></script>
   <script>
-    async function loadHome() {
+    async function loadResources() {
       try {
-        const [features, news] = await Promise.all([
-          fetchAPI('/api/features'),
-          fetchAPI('/api/news')
-        ])
-
-        const featuresPreview = document.getElementById('features-preview')
-        featuresPreview.innerHTML = features.slice(0, 3).map(createFeatureCard).join('')
-
-        const newsPreview = document.getElementById('news-preview')
-        newsPreview.innerHTML = news.slice(0, 2).map(createNewsCard).join('')
-
+        const resources = await fetchAPI('/api/resources')
+        document.getElementById('resources-grid').innerHTML = resources.map(createResourceCard).join('')
         lucide.createIcons()
       } catch (err) {
-        console.error('Errore caricamento home:', err)
+        console.error('Errore caricamento risorse:', err)
       }
     }
-    document.addEventListener('DOMContentLoaded', loadHome)
+    document.addEventListener('DOMContentLoaded', loadResources)
   </script>
 </body>
 </html>

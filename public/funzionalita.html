@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funzionalità - CyberGuard</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-top">
+      <div class="container">
+        <div class="header-top-inner">
+          <span>Piattaforma di Cybersecurity</span>
+          <div class="header-top-links">
+            <a href="/contatti">Contatti</a>
+            <a href="/admin">Area riservata</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-main">
+      <div class="container header-main-inner">
+        <a href="/" class="site-logo">
+          <div class="logo-mark"><i data-lucide="shield-check"></i></div>
+          <div class="logo-text">
+            <span class="logo-title">CyberGuard</span>
+            <span class="logo-subtitle">Cybersecurity per tutti</span>
+          </div>
+        </a>
+        <nav class="main-nav" id="main-nav">
+          <a href="/">Home</a>
+          <a href="/chi-siamo">Chi siamo</a>
+          <a href="/progetto">Il progetto</a>
+          <a href="/funzionalita" class="active">Funzionalità</a>
+          <a href="/risorse">Risorse</a>
+          <a href="/news">News</a>
+        </nav>
+        <button class="nav-toggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <div class="container">
+      <span>Ti trovi in:</span>
+      <a href="/">Home</a>
+      <span>Funzionalità</span>
+    </div>
+  </div>
+
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>Funzionalità</h1>
+        <p>Le aree tematiche e i contenuti offerti dalla piattaforma CyberGuard.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Aree tematiche</h2>
+        <p class="section-subtitle">La piattaforma copre le principali aree della cybersecurity con contenuti specifici e quiz mirati.</p>
+        <div class="grid-3" id="features-grid"></div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Quiz demo</h2>
+        <p class="section-subtitle">Prova un esempio del nostro sistema di quiz interattivi.</p>
+
+        <div class="card" style="max-width: 700px;">
+          <div id="quiz-container">
+            <h3 style="margin-bottom:1rem" id="quiz-question">Ricevi un'email dalla tua banca che ti chiede di cliccare un link per "verificare il tuo conto entro 24 ore". Cosa fai?</h3>
+            <div id="quiz-options" style="display:flex;flex-direction:column;gap:0.5rem">
+              <button class="btn btn-secondary" style="text-align:left;justify-content:flex-start" data-index="0">Clicco subito il link per non perdere l'accesso</button>
+              <button class="btn btn-secondary" style="text-align:left;justify-content:flex-start" data-index="1">Verifico il mittente e vado sul sito ufficiale della banca manualmente</button>
+              <button class="btn btn-secondary" style="text-align:left;justify-content:flex-start" data-index="2">Rispondo all'email chiedendo conferma</button>
+              <button class="btn btn-secondary" style="text-align:left;justify-content:flex-start" data-index="3">Inoltro l'email a tutti i miei contatti per avvisarli</button>
+            </div>
+            <div id="quiz-result" style="margin-top:1rem;padding:1rem;border-radius:4px;display:none"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo"><i data-lucide="shield-check"></i><span>CyberGuard</span></div>
+          <p>Piattaforma educativa per la cybersecurity, sviluppata durante il MAST Summer School 2026.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Link utili</h4>
+          <ul>
+            <li><a href="/chi-siamo">Chi siamo</a></li>
+            <li><a href="/progetto">Il progetto</a></li>
+            <li><a href="/funzionalita">Funzionalità</a></li>
+            <li><a href="/risorse">Risorse</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Servizi</h4>
+          <ul>
+            <li><a href="/news">News</a></li>
+            <li><a href="/contatti">Contatti</a></li>
+            <li><a href="/admin">Area riservata</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contatti</h4>
+          <ul>
+            <li><a href="mailto:cyberguard@example.it">cyberguard@example.it</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 CyberGuard - MAST Summer School 2026</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script>
+    async function loadFeatures() {
+      try {
+        const features = await fetchAPI('/api/features')
+        document.getElementById('features-grid').innerHTML = features.map(createFeatureCard).join('')
+        lucide.createIcons()
+      } catch (err) {
+        console.error('Errore caricamento features:', err)
+      }
+    }
+
+    document.querySelectorAll('#quiz-options button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const index = parseInt(this.dataset.index)
+        const correct = 1
+        const result = document.getElementById('quiz-result')
+        const buttons = document.querySelectorAll('#quiz-options button')
+
+        buttons.forEach(b => b.disabled = true)
+
+        if (index === correct) {
+          this.style.background = '#d1fae5'
+          this.style.borderColor = '#198754'
+          result.style.background = '#d1fae5'
+          result.style.color = '#198754'
+          result.textContent = '✓ Corretto! Hai riconosciuto una potenziale truffa. Mai cliccare su link in email sospette.'
+        } else {
+          this.style.background = '#fee2e2'
+          this.style.borderColor = '#dc3545'
+          buttons[correct].style.background = '#d1fae5'
+          buttons[correct].style.borderColor = '#198754'
+          result.style.background = '#fee2e2'
+          result.style.color = '#dc3545'
+          result.textContent = '✗ Sbagliato. La risposta corretta è evidenziata. Controlla sempre il mittente e accedi ai siti ufficiali manualmente.'
+        }
+        result.style.display = 'block'
+      })
+    })
+
+    document.addEventListener('DOMContentLoaded', loadFeatures)
+  </script>
+</body>
+</html>

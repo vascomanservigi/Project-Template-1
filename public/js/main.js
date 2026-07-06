@@ -1,17 +1,11 @@
-const quiz = {
-  question: 'Ricevi un\'email dalla tua banca che ti chiede di cliccare un link per "verificare il tuo conto entro 24 ore". Cosa fai?',
-  options: [
-    'Clicco subito il link per non perdere l\'accesso',
-    'Verifico il mittente e vado sul sito ufficiale della banca manualmente',
-    'Rispondo all\'email chiedendo conferma',
-    'Inoltro l\'email a tutti i miei contatti per avvisarli'
-  ],
-  correct: 1
-}
+let siteSettings = {}
 
-async function loadJSON(url) {
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+async function fetchAPI(url, options = {}) {
+  const res = await fetch(url, options)
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(err.error || `HTTP ${res.status}`)
+  }
   return res.json()
 }
 
@@ -22,107 +16,150 @@ function escapeHtml(text) {
   return div.innerHTML
 }
 
+function formatDate(dateStr) {
+  return new Date(dateStr).toLocaleDateString('it-IT', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })
+}
+
+function formatDateTime(dateStr) {
+  return new Date(dateStr).toLocaleString('it-IT', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+async function loadSettings() {
+  try {
+    siteSettings = await fetchAPI('/api/settings')
+    updateLogo()
+    updateMeta()
+  } catch (err) {
+    console.error('Errore caricamento settings:', err)
+  }
+}
+
+function updateLogo() {
+  const titleEl = document.querySelector('.logo-title')
+  const subtitleEl = document.querySelector('.logo-subtitle')
+  if (titleEl && siteSettings.site_title) titleEl.textContent = siteSettings.site_title
+  if (subtitleEl && siteSettings.site_subtitle) subtitleEl.textContent = siteSettings.site_subtitle
+}
+
+function updateMeta() {
+  if (siteSettings.site_title) {
+    document.title = document.title.replace('CyberGuard', siteSettings.site_title)
+  }
+}
+
 function createNewsCard(item) {
-  const date = new Date(item.created_at).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })
-  const excerpt = item.excerpt ? item.excerpt + (item.excerpt.length >= 200 ? '...' : '') : ''
   return `
-    <a href="/news/${item.id}" class="news-card">
-      <div class="news-date">${date}</div>
+    <a href="/news/${item.id}" class="news-item">
+      <div class="news-date">${formatDate(item.created_at)}</div>
       <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(excerpt)}</p>
+      <p>${escapeHtml(item.excerpt || '')}</p>
       <span class="news-read">Leggi di più →</span>
     </a>
   `
 }
 
-function renderQuiz() {
-  const questionEl = document.getElementById('quiz-question')
-  const optionsEl = document.getElementById('quiz-options')
-  const resultEl = document.getElementById('quiz-result')
+function createTeamCard(item) {
+  return `
+    <div class="team-card">
+      <div class="team-avatar">${escapeHtml(item.initials || '??')}</div>
+      <h3>${escapeHtml(item.name)}</h3>
+      <p class="team-role">${escapeHtml(item.role)}</p>
+      <p>${escapeHtml(item.bio || '')}</p>
+    </div>
+  `
+}
 
-  if (!questionEl) return
+function createFeatureCard(item) {
+  return `
+    <div class="card">
+      <div class="card-icon"><i data-lucide="${item.icon || 'check-circle'}"></i></div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.description)}</p>
+    </div>
+  `
+}
 
-  questionEl.textContent = quiz.question
-  optionsEl.innerHTML = quiz.options.map((opt, i) => `<div class="quiz-option" data-index="${i}">${opt}</div>`).join('')
-  resultEl.className = 'quiz-result'
-  resultEl.style.display = 'none'
+function createResourceCard(item) {
+  const icon = item.category === 'link' ? 'external-link' : item.category === 'video' ? 'play-circle' : 'file-text'
+  return `
+    <div class="resource-card">
+      <div class="resource-icon"><i data-lucide="${icon}"></i></div>
+      <div class="resource-content">
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.description || '')}</p>
+        ${item.url ? `<a href="${escapeHtml(item.url)}" target="_blank">${item.category === 'link' ? 'Visita il link' : 'Scarica'}</a>` : ''}
+      </div>
+    </div>
+  `
+}
 
-  optionsEl.querySelectorAll('.quiz-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      const index = parseInt(opt.dataset.index)
-      const options = optionsEl.querySelectorAll('.quiz-option')
-      options.forEach((o, i) => {
-        o.style.pointerEvents = 'none'
-        if (i === quiz.correct) o.classList.add('correct')
-        if (i === index && i !== quiz.correct) o.classList.add('wrong')
-      })
-      resultEl.style.display = 'block'
-      if (index === quiz.correct) {
-        resultEl.className = 'quiz-result show correct'
-        resultEl.textContent = 'Risposta corretta. Hai riconosciuto una potenziale truffa.'
-      } else {
-        resultEl.className = 'quiz-result show wrong'
-        resultEl.textContent = 'Risposta errata. La risposta corretta è evidenziata.'
-      }
+function initMobileNav() {
+  const toggle = document.querySelector('.nav-toggle')
+  const nav = document.getElementById('main-nav')
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => nav.classList.toggle('open'))
+    nav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => nav.classList.remove('open'))
     })
-  })
-}
-
-async function init() {
-  try {
-    const news = await loadJSON('/api/news')
-    const newsGrid = document.getElementById('news-grid')
-    if (newsGrid) {
-      if (news.length === 0) {
-        newsGrid.innerHTML = '<p style="color:var(--gray-500);grid-column:1/-1">Nessuna news al momento.</p>'
-      } else {
-        newsGrid.innerHTML = news.map(createNewsCard).join('')
-      }
-    }
-    renderQuiz()
-    lucide.createIcons()
-  } catch (err) {
-    console.error('Errore:', err)
   }
 }
 
-document.addEventListener('DOMContentLoaded', init)
+function initContactForm() {
+  const form = document.getElementById('contact-form')
+  if (!form) return
 
-document.querySelector('.nav-toggle')?.addEventListener('click', () => {
-  document.getElementById('main-nav')?.classList.toggle('open')
-})
+  form.addEventListener('submit', async e => {
+    e.preventDefault()
+    const btn = form.querySelector('button[type="submit"]')
+    const data = {
+      name: form.querySelector('#contact-name').value,
+      email: form.querySelector('#contact-email').value,
+      message: form.querySelector('#contact-message').value
+    }
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    const href = this.getAttribute('href')
-    if (href.startsWith('#') && href.length > 1) {
-      e.preventDefault()
-      const target = document.querySelector(href)
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        document.getElementById('main-nav')?.classList.remove('open')
-      }
+    btn.textContent = 'Invio in corso...'
+    btn.disabled = true
+
+    try {
+      await fetchAPI('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      btn.textContent = 'Messaggio inviato ✓'
+      form.reset()
+      setTimeout(() => { btn.textContent = 'Invia messaggio'; btn.disabled = false }, 3000)
+    } catch (err) {
+      btn.textContent = 'Errore, riprova'
+      btn.disabled = false
     }
   })
-})
+}
 
-document.getElementById('contact-form')?.addEventListener('submit', async e => {
-  e.preventDefault()
-  const btn = e.target.querySelector('button[type="submit"]')
-  const data = {
-    name: document.getElementById('contact-name').value,
-    email: document.getElementById('contact-email').value,
-    message: document.getElementById('contact-message').value
-  }
-  btn.textContent = 'Invio...'
-  btn.disabled = true
-  try {
-    await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-    btn.textContent = 'Messaggio inviato'
-    e.target.reset()
-    setTimeout(() => { btn.textContent = 'Invia messaggio'; btn.disabled = false }, 3000)
-  } catch {
-    btn.textContent = 'Errore'
-    btn.disabled = false
-  }
+function setActiveNav() {
+  const path = window.location.pathname
+  document.querySelectorAll('.main-nav a').forEach(a => {
+    const href = a.getAttribute('href')
+    if (href === path || (path === '/' && href === '/') || (path.startsWith(href) && href !== '/')) {
+      a.classList.add('active')
+    }
+  })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadSettings()
+  initMobileNav()
+  initContactForm()
+  setActiveNav()
+  if (typeof lucide !== 'undefined') lucide.createIcons()
 })
