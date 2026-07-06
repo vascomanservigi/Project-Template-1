@@ -3,85 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyberworld - MAST Summer School 2026</title>
+  <title>CyberGuard - MAST Summer School 2026</title>
   <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="container nav-container">
-      <a href="#" class="nav-logo">Cyberworld</a>
+  <header class="header">
+    <div class="container header-inner">
+      <div class="logo">
+        <div class="logo-icon"><i data-lucide="shield-check"></i></div>
+        <span>CyberGuard</span>
+      </div>
+      <nav class="nav">
+        <a href="#about" class="nav-link">Il progetto</a>
+        <a href="#features" class="nav-link">Funzionalità</a>
+        <a href="#team" class="nav-link">Team</a>
+        <a href="#demo" class="nav-link">Demo</a>
+      </nav>
       <button class="nav-toggle" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-links">
-        <li><a href="#program" class="nav-link">Programma</a></li>
-        <li><a href="#schedule" class="nav-link">Calendario</a></li>
-        <li><a href="#resources" class="nav-link">Risorse</a></li>
-        <li><a href="#contact" class="nav-link">Contatti</a></li>
-      </ul>
     </div>
-  </nav>
+  </header>
 
-  <section class="hero" id="hero">
+  <section class="hero">
     <div class="container hero-content">
-      <span class="hero-badge"><i data-lucide="sparkles" style="width:14px;height:14px"></i> MAST Summer School 2026</span>
-      <h1 class="hero-title">Costruisci il<br><span>Cyberworld</span></h1>
-      <p class="hero-subtitle">Crea siti web, applicazioni e strategie di cybersecurity. Dal 3 al 10 luglio 2026 — Bologna</p>
+      <div class="hero-badge">MAST Summer School 2026 — Cyberworld</div>
+      <h1 class="hero-title">La tua guida per una<br>navigazione sicura</h1>
+      <p class="hero-subtitle">CyberGuard è una piattaforma educativa per aiutare studenti e docenti a riconoscere le minacce online e proteggersi nel mondo digitale.</p>
       <div class="hero-actions">
-        <a href="#program" class="btn btn-primary">Scopri il programma</a>
-        <a href="#contact" class="btn">Iscriviti ora</a>
+        <a href="#demo" class="btn btn-primary">Prova la demo</a>
+        <a href="#about" class="btn btn-outline">Scopri di più</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Quiz interattivi</span></div>
+        <div class="stat"><span class="stat-num">12</span><span class="stat-label">Moduli formativi</span></div>
+        <div class="stat"><span class="stat-num">100%</span><span class="stat-label">In italiano</span></div>
       </div>
     </div>
   </section>
 
-  <section id="program" class="section">
+  <section id="about" class="section">
     <div class="container">
-      <span class="section-label">Il percorso</span>
-      <h2 class="section-title">Cosa imparerai</h2>
-      <p class="section-desc">Un viaggio completo nel mondo dello sviluppo web e della cybersecurity.</p>
-      <div class="grid cards-grid" id="program-cards"></div>
-    </div>
-  </section>
-
-  <section id="schedule" class="section section-alt">
-    <div class="container">
-      <span class="section-label">Calendario</span>
-      <h2 class="section-title">Giorno per giorno</h2>
-      <p class="section-desc">8 giorni intensivi, dal mattino alla sera.</p>
-      <div class="timeline" id="timeline"></div>
-    </div>
-  </section>
-
-  <section id="resources" class="section">
-    <div class="container">
-      <span class="section-label">Materiali</span>
-      <h2 class="section-title">Tool e risorse</h2>
-      <p class="section-desc">Gli strumenti che useremo durante il corso.</p>
-      <div class="grid tools-grid" id="tools-grid"></div>
-    </div>
-  </section>
-
-  <section id="contact" class="section section-alt">
-    <div class="container">
-      <span class="section-label">Contatti</span>
-      <h2 class="section-title">Richiedi informazioni</h2>
-      <p class="section-desc">Hai domande? Scrivici!</p>
-      <form class="contact-form" id="contact-form">
-        <div class="form-row">
-          <input type="text" placeholder="Nome e Cognome" required class="form-input">
-          <input type="email" placeholder="Email" required class="form-input">
+      <div class="section-header">
+        <h2 class="section-title">Il progetto</h2>
+        <p class="section-desc">Nato durante il MAST Summer School 2026, CyberGuard nasce dall'esigenza di formare giovani e adulti sui rischi del mondo digitale.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-icon"><i data-lucide="target"></i></div>
+          <h3>Mission</h3>
+          <p>Rendere la cybersecurity accessibile a tutti, con contenuti chiari e interattivi.</p>
         </div>
-        <textarea placeholder="Il tuo messaggio" rows="4" required class="form-input"></textarea>
-        <button type="submit" class="btn btn-primary">Invia messaggio</button>
-      </form>
+        <div class="about-card">
+          <div class="about-icon"><i data-lucide="users"></i></div>
+          <h3>Target</h3>
+          <p>Studenti delle superiori, docenti e chi vuole approfondire la sicurezza digitale.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon"><i data-lucide="lightbulb"></i></div>
+          <h3>Innovazione</h3>
+          <p>Quiz gamificati, scenari realistici e feedback immediato per imparare facendo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Funzionalità</h2>
+        <p class="section-desc">Tutto ciò che serve per imparare a difendersi online.</p>
+      </div>
+      <div class="features-grid" id="features-grid"></div>
+    </div>
+  </section>
+
+  <section id="team" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Il team</h2>
+        <p class="section-desc">Studenti del MAST Summer School 2026, track Cyberworld.</p>
+      </div>
+      <div class="team-grid" id="team-grid"></div>
+    </div>
+  </section>
+
+  <section id="demo" class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Prova la demo</h2>
+        <p class="section-desc">Un esempio dei nostri quiz sulla cybersecurity.</p>
+      </div>
+      <div class="demo-box">
+        <div class="quiz-container" id="quiz-container">
+          <div class="quiz-question" id="quiz-question"></div>
+          <div class="quiz-options" id="quiz-options"></div>
+          <div class="quiz-result" id="quiz-result"></div>
+        </div>
+      </div>
     </div>
   </section>
 
   <footer class="footer">
-    <div class="container">
-      <p>MAST Summer School 2026 — Cyberworld Track</p>
+    <div class="container footer-inner">
+      <div class="footer-info">
+        <div class="logo"><div class="logo-icon"><i data-lucide="shield-check"></i></div><span>CyberGuard</span></div>
+        <p>Progetto realizzato durante il MAST Summer School 2026</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.academy.mast.org/summer-school-2026" target="_blank">MAST Summer School</a>
+        <a href="mailto:cyberguard@example.com">Contattaci</a>
+      </div>
     </div>
   </footer>
 

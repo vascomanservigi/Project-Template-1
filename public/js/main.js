@@ -4,95 +4,91 @@ async function loadJSON(url) {
   return res.json()
 }
 
-function createCard(item) {
+function createFeatureCard(item) {
   return `
-    <div class="card">
-      <div class="card-icon"><i data-lucide="${item.icon}"></i></div>
-      <h3>${item.title}</h3>
-      <p>${item.desc}</p>
-    </div>
-  `
-}
-
-function createTimelineItem(item) {
-  return `
-    <div class="timeline-item">
-      <div class="timeline-day">Giorno ${item.day}</div>
-      <div>
-        <div class="timeline-title">${item.title}</div>
-        <div class="timeline-desc">${item.desc}</div>
+    <div class="feature-card">
+      <div class="feature-icon"><i data-lucide="${item.icon}"></i></div>
+      <div class="feature-text">
+        <h3>${item.title}</h3>
+        <p>${item.desc}</p>
       </div>
     </div>
   `
 }
 
-function createToolCard(item) {
+function createTeamCard(item) {
   return `
-    <div class="tool-card">
-      <div class="card-icon"><i data-lucide="${item.icon}"></i></div>
+    <div class="team-card">
+      <div class="team-avatar">${item.initials}</div>
       <h3>${item.name}</h3>
-      <p>${item.desc}</p>
+      <p>${item.role}</p>
     </div>
   `
 }
 
 function renderIcons() {
-  if (typeof lucide !== 'undefined') {
-    lucide.createIcons()
-  }
+  if (typeof lucide !== 'undefined') lucide.createIcons()
 }
 
 async function init() {
   try {
-    const [program, schedule, tools] = await Promise.all([
-      loadJSON('/api/program'),
-      loadJSON('/api/schedule'),
-      loadJSON('/api/tools'),
+    const [features, team] = await Promise.all([
+      loadJSON('/api/features'),
+      loadJSON('/api/team'),
     ])
-    document.getElementById('program-cards').innerHTML = program.map(createCard).join('')
-    document.getElementById('timeline').innerHTML = schedule.map(createTimelineItem).join('')
-    document.getElementById('tools-grid').innerHTML = tools.map(createToolCard).join('')
+    document.getElementById('features-grid').innerHTML = features.map(createFeatureCard).join('')
+    document.getElementById('team-grid').innerHTML = team.map(createTeamCard).join('')
     renderIcons()
+    loadQuiz()
   } catch (err) {
-    console.error('Errore nel caricamento dei dati:', err)
+    console.error('Errore:', err)
   }
+}
+
+async function loadQuiz() {
+  try {
+    const quiz = await loadJSON('/api/quiz')
+    renderQuiz(quiz)
+  } catch (err) {
+    console.error('Errore quiz:', err)
+  }
+}
+
+function renderQuiz(quiz) {
+  const questionEl = document.getElementById('quiz-question')
+  const optionsEl = document.getElementById('quiz-options')
+  const resultEl = document.getElementById('quiz-result')
+
+  questionEl.textContent = quiz.question
+  optionsEl.innerHTML = quiz.options.map((opt, i) => 
+    `<div class="quiz-option" data-index="${i}">${opt}</div>`
+  ).join('')
+  resultEl.className = 'quiz-result'
+  resultEl.style.display = 'none'
+
+  optionsEl.querySelectorAll('.quiz-option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      const index = parseInt(opt.dataset.index)
+      const options = optionsEl.querySelectorAll('.quiz-option')
+      options.forEach((o, i) => {
+        o.style.pointerEvents = 'none'
+        if (i === quiz.correct) o.classList.add('correct')
+        if (i === index && i !== quiz.correct) o.classList.add('wrong')
+      })
+      resultEl.style.display = 'block'
+      if (index === quiz.correct) {
+        resultEl.className = 'quiz-result show correct'
+        resultEl.textContent = 'Corretto! Ottimo lavoro.'
+      } else {
+        resultEl.className = 'quiz-result show wrong'
+        resultEl.textContent = 'Sbagliato. La risposta corretta è evidenziata.'
+      }
+    })
+  })
 }
 
 document.addEventListener('DOMContentLoaded', init)
 
 document.querySelector('.nav-toggle').addEventListener('click', () => {
-  document.querySelector('.nav-links').classList.toggle('open')
-})
-
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    document.querySelector('.nav-links').classList.remove('open')
-  })
-})
-
-document.getElementById('contact-form').addEventListener('submit', async e => {
-  e.preventDefault()
-  const btn = e.target.querySelector('.btn')
-  const data = {
-    name: e.target.querySelectorAll('input')[0].value,
-    email: e.target.querySelectorAll('input')[1].value,
-    message: e.target.querySelector('textarea').value,
-  }
-
-  btn.textContent = 'Invio in corso...'
-  btn.disabled = true
-
-  try {
-    await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-    btn.textContent = 'Inviato'
-    e.target.reset()
-    setTimeout(() => { btn.textContent = 'Invia messaggio'; btn.disabled = false }, 2000)
-  } catch {
-    btn.textContent = 'Errore, riprova'
-    btn.disabled = false
-  }
+  document.querySelector('.nav').classList.toggle('open')
 })

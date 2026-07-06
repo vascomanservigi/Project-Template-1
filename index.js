@@ -9,38 +9,38 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 const messages = []
 
-const program = [
-  { icon: 'globe', title: 'HTML & CSS', desc: 'Struttura e stile delle pagine web. Layout responsive, animazioni e best practices.' },
-  { icon: 'zap', title: 'JavaScript & Node.js', desc: 'Dal frontend al backend: JS lato client e server con Node.js ed Express.' },
-  { icon: 'shield', title: 'Cybersecurity', desc: 'OWASP Top 10, crittografia, attacchi comuni e come difendersi.' },
-  { icon: 'database', title: 'Database & API', desc: 'Progettazione di database REST API e integrazione con il frontend.' },
-  { icon: 'rocket', title: 'DevOps & Deploy', desc: 'Git, CI/CD, deployment su Render e cloud fundamentals.' },
-  { icon: 'cpu', title: 'AI & Web', desc: 'Integrazione di LLM e AI nei siti web. Il futuro del web development.' },
+const features = [
+  { icon: 'brain', title: 'Quiz interattivi', desc: 'Domande su phishing, malware, password e social engineering.' },
+  { icon: 'book-open', title: 'Moduli formativi', desc: 'Contenuti chiari e aggiornati sulle ultime minacce.' },
+  { icon: 'bar-chart-2', title: 'Progressi personali', desc: 'Traccia i tuoi miglioramenti nel tempo.' },
+  { icon: 'award', title: 'Badge e certificati', desc: 'Riconoscimenti per completare i percorsi.' },
+  { icon: 'users', title: 'Modalità classe', desc: 'Quiz per gruppi e sfide tra studenti.' },
+  { icon: 'smartphone', title: 'Mobile friendly', desc: 'Impara ovunque, dallo smartphone.' },
 ]
 
-const schedule = [
-  { day: 1, title: 'Benvenuti nel Cyberworld', desc: 'Presentazione del corso, setup ambiente e primi passi con HTML.' },
-  { day: 2, title: 'CSS & Design', desc: 'Styling avanzato, Flexbox, Grid, animazioni e design responsivo.' },
-  { day: 3, title: 'JavaScript Fundamentals', desc: 'Variabili, funzioni, DOM manipulation ed eventi.' },
-  { day: 4, title: 'Node.js & Express', desc: 'Server-side programming, routing e middleware.' },
-  { day: 5, title: 'Database & API', desc: 'Database relazionali, REST API e integrazione frontend-backend.' },
-  { day: 6, title: 'Cybersecurity', desc: 'OWASP Top 10, penetration testing e secure coding.' },
-  { day: 7, title: 'Progetto Finale', desc: 'Sviluppo di un\'applicazione web completa in team.' },
-  { day: 8, title: 'Presentazioni & Saluti', desc: 'Presentazione dei progetti, feedback e certificati.' },
+const team = [
+  { name: 'Marco R.', role: 'Backend & API', initials: 'MR' },
+  { name: 'Giulia T.', role: 'Frontend & UI', initials: 'GT' },
+  { name: 'Alessandro B.', role: 'Content & Quiz', initials: 'AB' },
+  { name: 'Sofia L.', role: 'Design', initials: 'SL' },
 ]
 
-const tools = [
-  { icon: 'code-2', name: 'VS Code', desc: 'Editor di codice' },
-  { icon: 'git-branch', name: 'Git & GitHub', desc: 'Version control' },
-  { icon: 'server', name: 'Node.js', desc: 'Runtime JavaScript' },
-  { icon: 'figma', name: 'Figma', desc: 'Design UI/UX' },
-  { icon: 'search', name: 'OWASP ZAP', desc: 'Security testing' },
-  { icon: 'cloud', name: 'Render', desc: 'Cloud deployment' },
+const quiz = [
+  {
+    question: 'Ricevi un\'email dalla tua banca che ti chiede di cliccare un link per verificare il conto. Cosa fai?',
+    options: [
+      'Clicco subito il link',
+      'Verifico il mittente e vado sul sito ufficiale manualmente',
+      'Rispondo chiedendo info',
+      'Inoltro a tutti i contatti'
+    ],
+    correct: 1
+  }
 ]
 
-app.get('/api/program', (req, res) => res.json(program))
-app.get('/api/schedule', (req, res) => res.json(schedule))
-app.get('/api/tools', (req, res) => res.json(tools))
+app.get('/api/features', (req, res) => res.json(features))
+app.get('/api/team', (req, res) => res.json(team))
+app.get('/api/quiz', (req, res) => res.json(quiz[0]))
 
 app.post('/api/contact', (req, res) => {
   const { name, email, message } = req.body
