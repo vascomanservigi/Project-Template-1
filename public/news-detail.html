@@ -3,99 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>News - CyberGuard</title>
+  <title>News — CyberGuard</title>
   <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-top">
-      <div class="container">
-        <div class="header-top-inner">
-          <span>Piattaforma di Cybersecurity</span>
-          <div class="header-top-links">
-            <a href="/contatti">Contatti</a>
-            <a href="/admin">Area riservata</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="header-main">
-      <div class="container header-main-inner">
-        <a href="/" class="site-logo">
-          <div class="logo-mark"><i data-lucide="shield-check"></i></div>
-          <div class="logo-text">
-            <span class="logo-title">CyberGuard</span>
-            <span class="logo-subtitle">Cybersecurity per tutti</span>
-          </div>
-        </a>
-        <nav class="main-nav" id="main-nav">
-          <a href="/">Home</a>
-          <a href="/chi-siamo">Chi siamo</a>
-          <a href="/progetto">Il progetto</a>
-          <a href="/funzionalita">Funzionalità</a>
-          <a href="/risorse">Risorse</a>
-          <a href="/news">News</a>
-        </nav>
-        <button class="nav-toggle" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <div class="breadcrumb">
+  <nav class="nav">
     <div class="container">
-      <span>Ti trovi in:</span>
-      <a href="/">Home</a>
-      <span>/</span>
-      <a href="/news">News</a>
-      <span id="breadcrumb-title"></span>
+      <a href="/" class="nav-brand">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M16 6L26 12V20L16 26L6 20V12L16 6Z" stroke="white" stroke-width="2" fill="none"/><circle cx="16" cy="16" r="4" fill="white"/></svg>
+        CyberGuard
+      </a>
+      <a href="/" class="btn btn-secondary">Torna alla home</a>
     </div>
-  </div>
+  </nav>
 
-  <main class="section">
-    <div class="container">
-      <article style="max-width:800px;margin:0 auto">
-        <header style="margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--gray-200)">
-          <div class="news-date" id="article-date"></div>
-          <h1 class="section-title" id="article-title" style="font-size:2rem"></h1>
-        </header>
-        <div id="article-content" style="font-size:1.05rem;line-height:1.8;color:var(--gray-600)"></div>
-        <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--gray-200)">
-          <a href="/news" class="btn btn-outline">← Torna alle news</a>
-        </div>
-      </article>
-    </div>
-  </main>
+  <article class="container" style="padding:140px 24px 80px; max-width:700px">
+    <div class="news-date" id="date"></div>
+    <h1 id="title" style="font-size:42px; font-weight:700; line-height:1.2; margin-bottom:24px"></h1>
+    <div id="content" style="color:var(--fg-muted); font-size:17px; line-height:1.8"></div>
+    <a href="/#news" class="btn btn-secondary" style="margin-top:40px">← Torna alle news</a>
+  </article>
 
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-bottom" style="border:none;padding:0">
-        <p>© 2026 CyberGuard - MAST Summer School 2026</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="/js/main.js"></script>
   <script>
-    async function loadNews() {
-      const id = window.location.pathname.split('/').pop()
+    async function load() {
+      const id = location.pathname.split('/').pop()
       try {
-        const news = await fetchAPI(`/api/news/${id}`)
-        document.title = `${news.title} - CyberGuard`
-        document.getElementById('article-title').textContent = news.title
-        document.getElementById('breadcrumb-title').textContent = ` / ${news.title.substring(0, 30)}${news.title.length > 30 ? '...' : ''}`
-        document.getElementById('article-date').textContent = formatDate(news.created_at)
-        document.getElementById('article-content').innerHTML = news.content.split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom:1.5rem">${escapeHtml(p)}</p>`).join('')
-        lucide.createIcons()
-      } catch (err) {
-        document.getElementById('article-title').textContent = 'News non trovata'
-        document.getElementById('article-content').innerHTML = '<p>La news richiesta non esiste o è stata rimossa.</p><p style="margin-top:1rem"><a href="/news" class="btn btn-primary">Torna alle news</a></p>'
+        const n = await (await fetch(`/api/news/${id}`)).json()
+        document.title = n.title + ' — CyberGuard'
+        date.textContent = new Date(n.created_at).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+        title.textContent = n.title
+        content.innerHTML = n.content.split('\n').filter(p => p.trim()).map(p => `<p style="margin-bottom:1.5em">${p}</p>`).join('')
+      } catch {
+        title.textContent = 'News non trovata'
+        content.innerHTML = '<p>La news non esiste.</p>'
       }
     }
-    document.addEventListener('DOMContentLoaded', loadNews)
+    load()
   </script>
 </body>
 </html>

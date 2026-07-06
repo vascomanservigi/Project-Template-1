@@ -3,620 +3,313 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - CyberGuard</title>
+  <title>Admin — CyberGuard</title>
   <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="background:var(--gray-50)">
-  <header class="site-header">
-    <div class="header-top">
-      <div class="container">
-        <div class="header-top-inner">
-          <span>Area amministrativa</span>
-          <div class="header-top-links">
-            <a href="/">Torna al sito</a>
-            <a href="#" id="logout-btn" style="display:none">Logout</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="header-main">
-      <div class="container header-main-inner">
-        <a href="/" class="site-logo">
-          <div class="logo-mark"><i data-lucide="shield-check"></i></div>
-          <div class="logo-text">
-            <span class="logo-title">CyberGuard</span>
-            <span class="logo-subtitle">Pannello admin</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <main class="section" style="min-height:80vh">
+<body style="padding-top:80px">
+  <nav class="nav" style="background:var(--bg-alt)">
     <div class="container">
-      <!-- Login -->
-      <div id="login-box" class="card" style="max-width:400px;margin:2rem auto">
-        <div style="text-align:center;margin-bottom:1.5rem">
-          <i data-lucide="lock" style="width:48px;height:48px;color:var(--primary)"></i>
-          <h2 style="margin-top:1rem">Accesso admin</h2>
-          <p style="color:var(--gray-500);font-size:0.95rem">Inserisci le credenziali per accedere</p>
+      <a href="/" class="nav-brand">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M16 6L26 12V20L16 26L6 20V12L16 6Z" stroke="white" stroke-width="2" fill="none"/><circle cx="16" cy="16" r="4" fill="white"/></svg>
+        CyberGuard
+      </a>
+      <a href="/" class="btn btn-secondary">Torna al sito</a>
+    </div>
+  </nav>
+
+  <main class="container" style="padding:40px 24px; max-width:900px">
+    <!-- Login -->
+    <div id="login" class="card" style="max-width:400px; margin:0 auto; background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:40px">
+      <h2 style="font-size:24px; margin-bottom:8px">Admin</h2>
+      <p style="color:var(--fg-muted); margin-bottom:32px">Accedi per gestire i contenuti.</p>
+      <form id="login-form">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="user" class="form-input" required>
         </div>
-        <form id="login-form">
-          <div class="form-group">
-            <label>Username</label>
-            <input type="text" id="username" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="password" class="form-input" required>
-          </div>
-          <div id="login-error" style="color:var(--danger);font-size:0.9rem;margin-bottom:1rem"></div>
-          <button type="submit" class="btn btn-primary" style="width:100%">Accedi</button>
-        </form>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="pass" class="form-input" required>
+        </div>
+        <div id="err" style="color:#f87171; margin-bottom:16px"></div>
+        <button class="btn btn-primary" style="width:100%">Accedi</button>
+      </form>
+    </div>
+
+    <!-- Panel -->
+    <div id="panel" style="display:none">
+      <div style="display:flex; gap:12px; margin-bottom:40px; flex-wrap:wrap">
+        <button class="btn btn-secondary active" data-tab="news">News</button>
+        <button class="btn btn-secondary" data-tab="features">Funzionalità</button>
+        <button class="btn btn-secondary" data-tab="team">Team</button>
+        <button class="btn btn-secondary" data-tab="resources">Risorse</button>
+        <button class="btn btn-secondary" data-tab="settings">Impostazioni</button>
+        <button class="btn" id="logout" style="margin-left:auto">Logout</button>
       </div>
 
-      <!-- Admin Panel -->
-      <div id="admin-panel" style="display:none">
-        <!-- Tabs -->
-        <div class="admin-tabs" style="display:flex;gap:0.5rem;margin-bottom:2rem;flex-wrap:wrap">
-          <button class="btn btn-secondary active" data-tab="settings"><i data-lucide="settings"></i> Impostazioni</button>
-          <button class="btn btn-secondary" data-tab="news"><i data-lucide="newspaper"></i> News</button>
-          <button class="btn btn-secondary" data-tab="team"><i data-lucide="users"></i> Team</button>
-          <button class="btn btn-secondary" data-tab="features"><i data-lucide="list"></i> Funzionalità</button>
-          <button class="btn btn-secondary" data-tab="resources"><i data-lucide="folder"></i> Risorse</button>
-          <button class="btn btn-secondary" data-tab="contacts"><i data-lucide="mail"></i> Messaggi</button>
-        </div>
-
-        <!-- Settings Tab -->
-        <div id="tab-settings" class="admin-tab">
-          <h2 class="section-title">Impostazioni sito</h2>
-          <div class="card" style="max-width:600px">
-            <form id="settings-form">
+      <!-- News -->
+      <div id="tab-news" class="tab">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div class="card" style="background:var(--card); border:1px solid var(--border); padding:24px; border-radius:var(--radius)">
+            <h3 style="margin-bottom:20px" id="news-title">Nuova news</h3>
+            <form id="news-form">
+              <input type="hidden" id="news-id">
               <div class="form-group">
-                <label>Titolo sito</label>
-                <input type="text" id="setting-site_title" class="form-input">
+                <label>Titolo</label>
+                <input type="text" id="news-t" class="form-input" required>
               </div>
               <div class="form-group">
-                <label>Sottotitolo</label>
-                <input type="text" id="setting-site_subtitle" class="form-input">
+                <label>Contenuto</label>
+                <textarea id="news-c" class="form-input" rows="5" required></textarea>
+              </div>
+              <button class="btn btn-primary" id="news-btn">Pubblica</button>
+              <button type="button" class="btn" id="news-cancel" style="display:none;margin-left:8px">Annulla</button>
+            </form>
+          </div>
+          <div id="news-list"></div>
+        </div>
+      </div>
+
+      <!-- Features -->
+      <div id="tab-features" class="tab" style="display:none">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div class="card" style="background:var(--card); border:1px solid var(--border); padding:24px; border-radius:var(--radius)">
+            <h3 style="margin-bottom:20px" id="feat-title">Nuova funzionalità</h3>
+            <form id="feat-form">
+              <input type="hidden" id="feat-id">
+              <div class="form-group">
+                <label>Titolo</label>
+                <input type="text" id="feat-t" class="form-input" required>
               </div>
               <div class="form-group">
                 <label>Descrizione</label>
-                <textarea id="setting-site_description" class="form-input" rows="3"></textarea>
+                <textarea id="feat-d" class="form-input" rows="3" required></textarea>
               </div>
               <div class="form-group">
-                <label>Email contatti</label>
-                <input type="email" id="setting-contact_email" class="form-input">
+                <label>Icona (emoji)</label>
+                <input type="text" id="feat-i" class="form-input" placeholder="⚡" style="width:100px">
               </div>
-              <div class="form-group">
-                <label>Indirizzo</label>
-                <input type="text" id="setting-contact_address" class="form-input">
-              </div>
-              <button type="submit" class="btn btn-primary">Salva impostazioni</button>
+              <button class="btn btn-primary" id="feat-btn">Aggiungi</button>
+              <button type="button" class="btn" id="feat-cancel" style="display:none;margin-left:8px">Annulla</button>
             </form>
           </div>
+          <div id="feat-list"></div>
         </div>
+      </div>
 
-        <!-- News Tab -->
-        <div id="tab-news" class="admin-tab" style="display:none">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
-            <div class="card">
-              <h3 id="news-form-title">Nuova news</h3>
-              <form id="news-form">
-                <input type="hidden" id="news-id">
-                <div class="form-group">
-                  <label>Titolo</label>
-                  <input type="text" id="news-title" class="form-input" required>
-                </div>
-                <div class="form-group">
-                  <label>Contenuto</label>
-                  <textarea id="news-content" class="form-input" rows="6" required></textarea>
-                </div>
-                <div style="display:flex;gap:0.5rem">
-                  <button type="submit" class="btn btn-primary" id="news-submit">Pubblica</button>
-                  <button type="button" class="btn btn-secondary" id="news-cancel" style="display:none">Annulla</button>
-                </div>
-              </form>
-            </div>
-            <div>
-              <h3 style="margin-bottom:1rem">News pubblicate</h3>
-              <div id="news-list"></div>
-            </div>
+      <!-- Team -->
+      <div id="tab-team" class="tab" style="display:none">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div class="card" style="background:var(--card); border:1px solid var(--border); padding:24px; border-radius:var(--radius)">
+            <h3 style="margin-bottom:20px" id="team-title">Nuovo membro</h3>
+            <form id="team-form">
+              <input type="hidden" id="team-id">
+              <div class="form-group">
+                <label>Nome</label>
+                <input type="text" id="team-n" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label>Ruolo</label>
+                <input type="text" id="team-r" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label>Iniziali</label>
+                <input type="text" id="team-in" class="form-input" maxlength="2" style="width:80px">
+              </div>
+              <button class="btn btn-primary" id="team-btn">Aggiungi</button>
+              <button type="button" class="btn" id="team-cancel" style="display:none;margin-left:8px">Annulla</button>
+            </form>
           </div>
+          <div id="team-list"></div>
         </div>
+      </div>
 
-        <!-- Team Tab -->
-        <div id="tab-team" class="admin-tab" style="display:none">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
-            <div class="card">
-              <h3 id="team-form-title">Nuovo membro</h3>
-              <form id="team-form">
-                <input type="hidden" id="team-id">
-                <div class="form-group">
-                  <label>Nome</label>
-                  <input type="text" id="team-name" class="form-input" required>
-                </div>
-                <div class="form-group">
-                  <label>Ruolo</label>
-                  <input type="text" id="team-role" class="form-input" required>
-                </div>
-                <div class="form-group">
-                  <label>Bio</label>
-                  <textarea id="team-bio" class="form-input" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Iniziali (es. MR)</label>
-                  <input type="text" id="team-initials" class="form-input" maxlength="2" style="width:100px">
-                </div>
-                <div class="form-group">
-                  <label>Ordine</label>
-                  <input type="number" id="team-order" class="form-input" value="0" style="width:100px">
-                </div>
-                <div style="display:flex;gap:0.5rem">
-                  <button type="submit" class="btn btn-primary" id="team-submit">Aggiungi</button>
-                  <button type="button" class="btn btn-secondary" id="team-cancel" style="display:none">Annulla</button>
-                </div>
-              </form>
-            </div>
-            <div>
-              <h3 style="margin-bottom:1rem">Membri del team</h3>
-              <div id="team-list"></div>
-            </div>
+      <!-- Resources -->
+      <div id="tab-resources" class="tab" style="display:none">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+          <div class="card" style="background:var(--card); border:1px solid var(--border); padding:24px; border-radius:var(--radius)">
+            <h3 style="margin-bottom:20px" id="res-title">Nuova risorsa</h3>
+            <form id="res-form">
+              <input type="hidden" id="res-id">
+              <div class="form-group">
+                <label>Titolo</label>
+                <input type="text" id="res-t" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label>URL</label>
+                <input type="url" id="res-u" class="form-input" placeholder="https://">
+              </div>
+              <div class="form-group">
+                <label>Categoria</label>
+                <select id="res-cat" class="form-input">
+                  <option value="documento">Documento</option>
+                  <option value="link">Link</option>
+                  <option value="video">Video</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" id="res-btn">Aggiungi</button>
+              <button type="button" class="btn" id="res-cancel" style="display:none;margin-left:8px">Annulla</button>
+            </form>
           </div>
+          <div id="res-list"></div>
         </div>
+      </div>
 
-        <!-- Features Tab -->
-        <div id="tab-features" class="admin-tab" style="display:none">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
-            <div class="card">
-              <h3 id="feature-form-title">Nuova funzionalità</h3>
-              <form id="feature-form">
-                <input type="hidden" id="feature-id">
-                <div class="form-group">
-                  <label>Titolo</label>
-                  <input type="text" id="feature-title" class="form-input" required>
-                </div>
-                <div class="form-group">
-                  <label>Descrizione</label>
-                  <textarea id="feature-description" class="form-input" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Icona (nome Lucide)</label>
-                  <input type="text" id="feature-icon" class="form-input" value="check-circle" placeholder="es. shield, key, mail">
-                </div>
-                <div class="form-group">
-                  <label>Ordine</label>
-                  <input type="number" id="feature-order" class="form-input" value="0" style="width:100px">
-                </div>
-                <div style="display:flex;gap:0.5rem">
-                  <button type="submit" class="btn btn-primary" id="feature-submit">Aggiungi</button>
-                  <button type="button" class="btn btn-secondary" id="feature-cancel" style="display:none">Annulla</button>
-                </div>
-              </form>
+      <!-- Settings -->
+      <div id="tab-settings" class="tab" style="display:none">
+        <div class="card" style="background:var(--card); border:1px solid var(--border); padding:24px; border-radius:var(--radius); max-width:500px">
+          <h3 style="margin-bottom:20px">Impostazioni</h3>
+          <form id="set-form">
+            <div class="form-group">
+              <label>Titolo sito</label>
+              <input type="text" id="set-title" class="form-input">
             </div>
-            <div>
-              <h3 style="margin-bottom:1rem">Funzionalità</h3>
-              <div id="features-list"></div>
+            <div class="form-group">
+              <label>Sottotitolo</label>
+              <input type="text" id="set-sub" class="form-input">
             </div>
-          </div>
-        </div>
-
-        <!-- Resources Tab -->
-        <div id="tab-resources" class="admin-tab" style="display:none">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
-            <div class="card">
-              <h3 id="resource-form-title">Nuova risorsa</h3>
-              <form id="resource-form">
-                <input type="hidden" id="resource-id">
-                <div class="form-group">
-                  <label>Titolo</label>
-                  <input type="text" id="resource-title" class="form-input" required>
-                </div>
-                <div class="form-group">
-                  <label>Descrizione</label>
-                  <textarea id="resource-description" class="form-input" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                  <label>URL</label>
-                  <input type="url" id="resource-url" class="form-input" placeholder="https://...">
-                </div>
-                <div class="form-group">
-                  <label>Categoria</label>
-                  <select id="resource-category" class="form-input">
-                    <option value="documento">Documento</option>
-                    <option value="link">Link esterno</option>
-                    <option value="video">Video</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Ordine</label>
-                  <input type="number" id="resource-order" class="form-input" value="0" style="width:100px">
-                </div>
-                <div style="display:flex;gap:0.5rem">
-                  <button type="submit" class="btn btn-primary" id="resource-submit">Aggiungi</button>
-                  <button type="button" class="btn btn-secondary" id="resource-cancel" style="display:none">Annulla</button>
-                </div>
-              </form>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="set-email" class="form-input">
             </div>
-            <div>
-              <h3 style="margin-bottom:1rem">Risorse</h3>
-              <div id="resources-list"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contacts Tab -->
-        <div id="tab-contacts" class="admin-tab" style="display:none">
-          <h2 class="section-title">Messaggi ricevuti</h2>
-          <div id="contacts-list"></div>
+            <button class="btn btn-primary">Salva</button>
+          </form>
         </div>
       </div>
     </div>
   </main>
 
   <style>
-    .admin-tabs .btn { font-size:0.85rem; }
-    .admin-tabs .btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-    .admin-tabs .btn svg { width:16px;height:16px; }
-    .list-item { background: white; border: 1px solid var(--gray-200); padding: 1rem; margin-bottom: 0.5rem; border-radius: 4px; }
-    .list-item-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem; }
-    .list-item h4 { font-size: 0.95rem; color: var(--gray-800); }
-    .list-item p { font-size: 0.85rem; color: var(--gray-500); }
-    .list-item small { font-size: 0.75rem; color: var(--gray-400); }
-    .list-item-actions { display: flex; gap: 0.25rem; }
-    .btn-icon { width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; }
-    .btn-edit { background: var(--primary-light); color: var(--primary); }
-    .btn-delete { background: #fee2e2; color: var(--danger); }
-    .contact-item { background: white; border: 1px solid var(--gray-200); padding: 1.25rem; margin-bottom: 0.75rem; border-radius: 4px; border-left: 4px solid var(--primary); }
-    .contact-item.read { border-left-color: var(--gray-300); opacity: 0.7; }
-    .empty { text-align: center; padding: 2rem; color: var(--gray-400); }
+    .btn.secondary.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .item { background: var(--card); border: 1px solid var(--border); padding: 16px; border-radius: var(--radius-sm); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .item h4 { font-size: 15px; }
+    .item p { font-size: 13px; color: var(--fg-muted); }
+    .item-acts { display: flex; gap: 8px; }
+    .item-acts button { background: transparent; border: 1px solid var(--border); color: var(--fg-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .item-acts button:hover { border-color: var(--accent); color: var(--accent); }
+    .item-acts button.del:hover { border-color: #f87171; color: #f87171; }
+    @media (max-width: 768px) { .tab > div { grid-template-columns: 1fr !important; } }
   </style>
 
-  <script src="/js/main.js"></script>
   <script>
-    let loggedIn = false
+    let auth = false
+    const api = (url, opts = {}) => fetch(url, opts).then(r => r.ok ? r.json() : Promise.reject(r))
 
-    // Auth
-    async function checkAuth() {
-      const res = await fetch('/api/auth/check')
-      const data = await res.json()
-      loggedIn = data.loggedIn
-      updateUI()
+    // Login
+    document.getElementById('login-form').onsubmit = async e => {
+      e.preventDefault()
+      try {
+        const d = await api('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: user.value, password: pass.value }) })
+        if (d.ok) { auth = true; show() }
+      } catch { err.textContent = 'Credenziali errate' }
     }
 
-    function updateUI() {
-      document.getElementById('login-box').style.display = loggedIn ? 'none' : 'block'
-      document.getElementById('admin-panel').style.display = loggedIn ? 'block' : 'none'
-      document.getElementById('logout-btn').style.display = loggedIn ? 'inline' : 'none'
-      if (loggedIn) loadAll()
-      lucide.createIcons()
+    document.getElementById('logout').onclick = async () => { await api('/api/logout', { method: 'POST' }); location.reload() }
+
+    async function show() {
+      document.getElementById('login').style.display = 'none'
+      document.getElementById('panel').style.display = 'block'
+      loadAll()
     }
-
-    document.getElementById('login-form').addEventListener('submit', async e => {
-      e.preventDefault()
-      const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: document.getElementById('username').value, password: document.getElementById('password').value }) })
-      const data = await res.json()
-      if (data.ok) { loggedIn = true; updateUI() }
-      else document.getElementById('login-error').textContent = 'Credenziali errate'
-    })
-
-    document.getElementById('logout-btn').addEventListener('click', async e => {
-      e.preventDefault()
-      await fetch('/api/logout', { method: 'POST' })
-      loggedIn = false
-      updateUI()
-    })
 
     // Tabs
-    document.querySelectorAll('.admin-tabs button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.admin-tabs button').forEach(b => b.classList.remove('active'))
-        btn.classList.add('active')
-        document.querySelectorAll('.admin-tab').forEach(t => t.style.display = 'none')
-        document.getElementById('tab-' + btn.dataset.tab).style.display = 'block'
-        lucide.createIcons()
-      })
+    document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
+      document.querySelectorAll('[data-tab]').forEach(x => x.classList.remove('active'))
+      b.classList.add('active')
+      document.querySelectorAll('.tab').forEach(t => t.style.display = 'none')
+      document.getElementById('tab-' + b.dataset.tab).style.display = 'block'
     })
 
-    // Load all
+    // Load
     async function loadAll() {
-      await Promise.all([loadSettings(), loadNews(), loadTeam(), loadFeatures(), loadResources(), loadContacts()])
-      lucide.createIcons()
+      const [news, feats, team, res, set] = await Promise.all([
+        api('/api/news'), api('/api/features'), api('/api/team'), api('/api/resources'), api('/api/admin/settings')
+      ])
+      render('news', news, n => `<div><h4>${esc(n.title)}</h4><p>${formatDate(n.created_at)}</p></div>`, 'news')
+      render('feat', feats, f => `<div><h4>${esc(f.title)}</h4></div>`, 'features')
+      render('team', team, t => `<div><h4>${esc(t.name)}</h4><p>${esc(t.role)}</p></div>`, 'team')
+      render('res', res, r => `<div><h4>${esc(r.title)}</h4><p>${r.category}</p></div>`, 'resources')
+      document.getElementById('set-title').value = set.site_title || ''
+      document.getElementById('set-sub').value = set.site_subtitle || ''
+      document.getElementById('set-email').value = set.contact_email || ''
     }
 
-    // Settings
-    async function loadSettings() {
-      const settings = await fetchAPI('/api/admin/settings')
-      Object.entries(settings).forEach(([k, v]) => {
-        const el = document.getElementById('setting-' + k)
-        if (el) el.value = v || ''
-      })
-    }
-
-    document.getElementById('settings-form').addEventListener('submit', async e => {
-      e.preventDefault()
-      const data = {
-        site_title: document.getElementById('setting-site_title').value,
-        site_subtitle: document.getElementById('setting-site_subtitle').value,
-        site_description: document.getElementById('setting-site_description').value,
-        contact_email: document.getElementById('setting-contact_email').value,
-        contact_address: document.getElementById('setting-contact_address').value
-      }
-      await fetchAPI('/api/admin/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-      alert('Impostazioni salvate!')
-    })
-
-    // News
-    async function loadNews() {
-      const items = await fetchAPI('/api/news')
-      const list = document.getElementById('news-list')
-      list.innerHTML = items.length === 0 ? '<div class="empty">Nessuna news</div>' : items.map(n => `
-        <div class="list-item">
-          <div class="list-item-header">
-            <div>
-              <h4>${escapeHtml(n.title)}</h4>
-              <small>${formatDateTime(n.created_at)}</small>
-            </div>
-            <div class="list-item-actions">
-              <button class="btn btn-icon btn-edit" onclick="editNews(${n.id})"><i data-lucide="pencil"></i></button>
-              <button class="btn btn-icon btn-delete" onclick="deleteNews(${n.id})"><i data-lucide="trash-2"></i></button>
-            </div>
+    function render(prefix, items, html, endpoint) {
+      document.getElementById(`${prefix}-list`).innerHTML = items.map(i => `
+        <div class="item">
+          ${html(i)}
+          <div class="item-acts">
+            <button onclick="edit('${prefix}','${endpoint}',${i.id})">Modifica</button>
+            <button class="del" onclick="del('${endpoint}',${i.id})">Elimina</button>
           </div>
         </div>
-      `).join('')
-      lucide.createIcons()
+      `).join('') || '<p style="color:var(--fg-muted)">Nessun elemento</p>'
     }
 
-    document.getElementById('news-form').addEventListener('submit', async e => {
+    window.edit = async (p, ep, id) => {
+      const all = await api(`/api/${ep}`)
+      const it = all.find(x => x.id === id)
+      if (p === 'news') { news-id.value = id; news-t.value = it.title; news-c.value = it.content; news-title.textContent = 'Modifica'; news-btn.textContent = 'Salva'; news-cancel.style.display = 'inline' }
+      if (p === 'feat') { feat-id.value = id; feat-t.value = it.title; feat-d.value = it.description; feat-i.value = it.icon || ''; feat-title.textContent = 'Modifica'; feat-btn.textContent = 'Salva'; feat-cancel.style.display = 'inline' }
+      if (p === 'team') { team-id.value = id; team-n.value = it.name; team-r.value = it.role; team-in.value = it.initials || ''; team-title.textContent = 'Modifica'; team-btn.textContent = 'Salva'; team-cancel.style.display = 'inline' }
+      if (p === 'res') { res-id.value = id; res-t.value = it.title; res-u.value = it.url || ''; res-cat.value = it.category; res-title.textContent = 'Modifica'; res-btn.textContent = 'Salva'; res-cancel.style.display = 'inline' }
+    }
+
+    window.del = async (ep, id) => { if (confirm('Eliminare?')) { await api(`/api/admin/${ep}/${id}`, { method: 'DELETE' }); loadAll() } }
+
+    // Forms
+    document.getElementById('news-form').onsubmit = async e => {
       e.preventDefault()
-      const id = document.getElementById('news-id').value
-      const data = { title: document.getElementById('news-title').value, content: document.getElementById('news-content').value }
-      const url = id ? `/api/admin/news/${id}` : '/api/admin/news'
-      await fetchAPI(url, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-      resetNewsForm()
-      loadNews()
-    })
-
-    async function editNews(id) {
-      const n = await fetchAPI(`/api/news/${id}`)
-      document.getElementById('news-id').value = id
-      document.getElementById('news-title').value = n.title
-      document.getElementById('news-content').value = n.content
-      document.getElementById('news-form-title').textContent = 'Modifica news'
-      document.getElementById('news-submit').textContent = 'Salva'
-      document.getElementById('news-cancel').style.display = 'inline-flex'
+      const id = news-id.value, d = { title: news-t.value, content: news-c.value }
+      await api(id ? `/api/admin/news/${id}` : '/api/admin/news', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
+      reset('news'); loadAll()
     }
+    document.getElementById('news-cancel').onclick = () => reset('news')
 
-    function resetNewsForm() {
-      document.getElementById('news-id').value = ''
-      document.getElementById('news-title').value = ''
-      document.getElementById('news-content').value = ''
-      document.getElementById('news-form-title').textContent = 'Nuova news'
-      document.getElementById('news-submit').textContent = 'Pubblica'
-      document.getElementById('news-cancel').style.display = 'none'
-    }
-    document.getElementById('news-cancel').addEventListener('click', resetNewsForm)
-
-    async function deleteNews(id) {
-      if (confirm('Eliminare questa news?')) { await fetchAPI(`/api/admin/news/${id}`, { method: 'DELETE' }); loadNews() }
-    }
-
-    // Team
-    async function loadTeam() {
-      const items = await fetchAPI('/api/team')
-      const list = document.getElementById('team-list')
-      list.innerHTML = items.length === 0 ? '<div class="empty">Nessun membro</div>' : items.map(t => `
-        <div class="list-item">
-          <div class="list-item-header">
-            <div>
-              <h4>${escapeHtml(t.name)} <small style="color:var(--primary)">${escapeHtml(t.role)}</small></h4>
-            </div>
-            <div class="list-item-actions">
-              <button class="btn btn-icon btn-edit" onclick="editTeam(${t.id})"><i data-lucide="pencil"></i></button>
-              <button class="btn btn-icon btn-delete" onclick="deleteTeam(${t.id})"><i data-lucide="trash-2"></i></button>
-            </div>
-          </div>
-        </div>
-      `).join('')
-      lucide.createIcons()
-    }
-
-    document.getElementById('team-form').addEventListener('submit', async e => {
+    document.getElementById('feat-form').onsubmit = async e => {
       e.preventDefault()
-      const id = document.getElementById('team-id').value
-      const data = { name: document.getElementById('team-name').value, role: document.getElementById('team-role').value, bio: document.getElementById('team-bio').value, initials: document.getElementById('team-initials').value, order: parseInt(document.getElementById('team-order').value) || 0 }
-      const url = id ? `/api/admin/team/${id}` : '/api/admin/team'
-      await fetchAPI(url, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-      resetTeamForm()
-      loadTeam()
-    })
-
-    async function editTeam(id) {
-      const items = await fetchAPI('/api/team')
-      const t = items.find(x => x.id === id)
-      document.getElementById('team-id').value = id
-      document.getElementById('team-name').value = t.name
-      document.getElementById('team-role').value = t.role
-      document.getElementById('team-bio').value = t.bio || ''
-      document.getElementById('team-initials').value = t.initials || ''
-      document.getElementById('team-order').value = t.order || 0
-      document.getElementById('team-form-title').textContent = 'Modifica membro'
-      document.getElementById('team-submit').textContent = 'Salva'
-      document.getElementById('team-cancel').style.display = 'inline-flex'
+      const id = feat-id.value, d = { title: feat-t.value, description: feat-d.value, icon: feat-i.value }
+      await api(id ? `/api/admin/features/${id}` : '/api/admin/features', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
+      reset('feat'); loadAll()
     }
+    document.getElementById('feat-cancel').onclick = () => reset('feat')
 
-    function resetTeamForm() {
-      document.getElementById('team-id').value = ''
-      document.getElementById('team-name').value = ''
-      document.getElementById('team-role').value = ''
-      document.getElementById('team-bio').value = ''
-      document.getElementById('team-initials').value = ''
-      document.getElementById('team-order').value = '0'
-      document.getElementById('team-form-title').textContent = 'Nuovo membro'
-      document.getElementById('team-submit').textContent = 'Aggiungi'
-      document.getElementById('team-cancel').style.display = 'none'
-    }
-    document.getElementById('team-cancel').addEventListener('click', resetTeamForm)
-
-    async function deleteTeam(id) {
-      if (confirm('Eliminare questo membro?')) { await fetchAPI(`/api/admin/team/${id}`, { method: 'DELETE' }); loadTeam() }
-    }
-
-    // Features
-    async function loadFeatures() {
-      const items = await fetchAPI('/api/features')
-      const list = document.getElementById('features-list')
-      list.innerHTML = items.length === 0 ? '<div class="empty">Nessuna funzionalità</div>' : items.map(f => `
-        <div class="list-item">
-          <div class="list-item-header">
-            <div>
-              <h4>${escapeHtml(f.title)}</h4>
-              <p>${escapeHtml(f.description)}</p>
-            </div>
-            <div class="list-item-actions">
-              <button class="btn btn-icon btn-edit" onclick="editFeature(${f.id})"><i data-lucide="pencil"></i></button>
-              <button class="btn btn-icon btn-delete" onclick="deleteFeature(${f.id})"><i data-lucide="trash-2"></i></button>
-            </div>
-          </div>
-        </div>
-      `).join('')
-      lucide.createIcons()
-    }
-
-    document.getElementById('feature-form').addEventListener('submit', async e => {
+    document.getElementById('team-form').onsubmit = async e => {
       e.preventDefault()
-      const id = document.getElementById('feature-id').value
-      const data = { title: document.getElementById('feature-title').value, description: document.getElementById('feature-description').value, icon: document.getElementById('feature-icon').value, order: parseInt(document.getElementById('feature-order').value) || 0 }
-      const url = id ? `/api/admin/features/${id}` : '/api/admin/features'
-      await fetchAPI(url, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-      resetFeatureForm()
-      loadFeatures()
-    })
-
-    async function editFeature(id) {
-      const items = await fetchAPI('/api/features')
-      const f = items.find(x => x.id === id)
-      document.getElementById('feature-id').value = id
-      document.getElementById('feature-title').value = f.title
-      document.getElementById('feature-description').value = f.description
-      document.getElementById('feature-icon').value = f.icon || 'check-circle'
-      document.getElementById('feature-order').value = f.order || 0
-      document.getElementById('feature-form-title').textContent = 'Modifica funzionalità'
-      document.getElementById('feature-submit').textContent = 'Salva'
-      document.getElementById('feature-cancel').style.display = 'inline-flex'
+      const id = team-id.value, d = { name: team-n.value, role: team-r.value, initials: team-in.value }
+      await api(id ? `/api/admin/team/${id}` : '/api/admin/team', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
+      reset('team'); loadAll()
     }
+    document.getElementById('team-cancel').onclick = () => reset('team')
 
-    function resetFeatureForm() {
-      document.getElementById('feature-id').value = ''
-      document.getElementById('feature-title').value = ''
-      document.getElementById('feature-description').value = ''
-      document.getElementById('feature-icon').value = 'check-circle'
-      document.getElementById('feature-order').value = '0'
-      document.getElementById('feature-form-title').textContent = 'Nuova funzionalità'
-      document.getElementById('feature-submit').textContent = 'Aggiungi'
-      document.getElementById('feature-cancel').style.display = 'none'
-    }
-    document.getElementById('feature-cancel').addEventListener('click', resetFeatureForm)
-
-    async function deleteFeature(id) {
-      if (confirm('Eliminare questa funzionalità?')) { await fetchAPI(`/api/admin/features/${id}`, { method: 'DELETE' }); loadFeatures() }
-    }
-
-    // Resources
-    async function loadResources() {
-      const items = await fetchAPI('/api/resources')
-      const list = document.getElementById('resources-list')
-      list.innerHTML = items.length === 0 ? '<div class="empty">Nessuna risorsa</div>' : items.map(r => `
-        <div class="list-item">
-          <div class="list-item-header">
-            <div>
-              <h4>${escapeHtml(r.title)} <small style="color:var(--primary)">${r.category}</small></h4>
-            </div>
-            <div class="list-item-actions">
-              <button class="btn btn-icon btn-edit" onclick="editResource(${r.id})"><i data-lucide="pencil"></i></button>
-              <button class="btn btn-icon btn-delete" onclick="deleteResource(${r.id})"><i data-lucide="trash-2"></i></button>
-            </div>
-          </div>
-        </div>
-      `).join('')
-      lucide.createIcons()
-    }
-
-    document.getElementById('resource-form').addEventListener('submit', async e => {
+    document.getElementById('res-form').onsubmit = async e => {
       e.preventDefault()
-      const id = document.getElementById('resource-id').value
-      const data = { title: document.getElementById('resource-title').value, description: document.getElementById('resource-description').value, url: document.getElementById('resource-url').value, category: document.getElementById('resource-category').value, order: parseInt(document.getElementById('resource-order').value) || 0 }
-      const url = id ? `/api/admin/resources/${id}` : '/api/admin/resources'
-      await fetchAPI(url, { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
-      resetResourceForm()
-      loadResources()
-    })
+      const id = res-id.value, d = { title: res-t.value, url: res-u.value, category: res-cat.value }
+      await api(id ? `/api/admin/resources/${id}` : '/api/admin/resources', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(d) })
+      reset('res'); loadAll()
+    }
+    document.getElementById('res-cancel').onclick = () => reset('res')
 
-    async function editResource(id) {
-      const items = await fetchAPI('/api/resources')
-      const r = items.find(x => x.id === id)
-      document.getElementById('resource-id').value = id
-      document.getElementById('resource-title').value = r.title
-      document.getElementById('resource-description').value = r.description || ''
-      document.getElementById('resource-url').value = r.url || ''
-      document.getElementById('resource-category').value = r.category || 'documento'
-      document.getElementById('resource-order').value = r.order || 0
-      document.getElementById('resource-form-title').textContent = 'Modifica risorsa'
-      document.getElementById('resource-submit').textContent = 'Salva'
-      document.getElementById('resource-cancel').style.display = 'inline-flex'
+    document.getElementById('set-form').onsubmit = async e => {
+      e.preventDefault()
+      await api('/api/admin/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ site_title: set-title.value, site_subtitle: set-sub.value, contact_email: set-email.value }) })
+      alert('Salvato!')
     }
 
-    function resetResourceForm() {
-      document.getElementById('resource-id').value = ''
-      document.getElementById('resource-title').value = ''
-      document.getElementById('resource-description').value = ''
-      document.getElementById('resource-url').value = ''
-      document.getElementById('resource-category').value = 'documento'
-      document.getElementById('resource-order').value = '0'
-      document.getElementById('resource-form-title').textContent = 'Nuova risorsa'
-      document.getElementById('resource-submit').textContent = 'Aggiungi'
-      document.getElementById('resource-cancel').style.display = 'none'
-    }
-    document.getElementById('resource-cancel').addEventListener('click', resetResourceForm)
-
-    async function deleteResource(id) {
-      if (confirm('Eliminare questa risorsa?')) { await fetchAPI(`/api/admin/resources/${id}`, { method: 'DELETE' }); loadResources() }
+    function reset(p) {
+      if (p === 'news') { news-id.value = ''; news-t.value = ''; news-c.value = ''; news-title.textContent = 'Nuova news'; news-btn.textContent = 'Pubblica'; news-cancel.style.display = 'none' }
+      if (p === 'feat') { feat-id.value = ''; feat-t.value = ''; feat-d.value = ''; feat-i.value = ''; feat-title.textContent = 'Nuova funzionalità'; feat-btn.textContent = 'Aggiungi'; feat-cancel.style.display = 'none' }
+      if (p === 'team') { team-id.value = ''; team-n.value = ''; team-r.value = ''; team-in.value = ''; team-title.textContent = 'Nuovo membro'; team-btn.textContent = 'Aggiungi'; team-cancel.style.display = 'none' }
+      if (p === 'res') { res-id.value = ''; res-t.value = ''; res-u.value = ''; res-title.textContent = 'Nuova risorsa'; res-btn.textContent = 'Aggiungi'; res-cancel.style.display = 'none' }
     }
 
-    // Contacts
-    async function loadContacts() {
-      const items = await fetchAPI('/api/admin/contacts')
-      const list = document.getElementById('contacts-list')
-      list.innerHTML = items.length === 0 ? '<div class="empty">Nessun messaggio</div>' : items.map(c => `
-        <div class="contact-item ${c.read ? 'read' : ''}">
-          <div class="list-item-header">
-            <div>
-              <h4>${escapeHtml(c.name)} <small>&lt;${escapeHtml(c.email)}&gt;</small></h4>
-              <small>${formatDateTime(c.created_at)}</small>
-            </div>
-            <div class="list-item-actions">
-              ${!c.read ? `<button class="btn btn-sm btn-secondary" onclick="markRead(${c.id})">Segna come letto</button>` : ''}
-              <button class="btn btn-icon btn-delete" onclick="deleteContact(${c.id})"><i data-lucide="trash-2"></i></button>
-            </div>
-          </div>
-          <p style="margin-top:0.75rem;white-space:pre-wrap">${escapeHtml(c.message)}</p>
-        </div>
-      `).join('')
-      lucide.createIcons()
+    // Check auth
+    async function check() {
+      const d = await api('/api/auth/check')
+      if (d.loggedIn) { auth = true; show() }
     }
-
-    async function markRead(id) {
-      await fetchAPI(`/api/admin/contacts/${id}/read`, { method: 'PUT' })
-      loadContacts()
-    }
-
-    async function deleteContact(id) {
-      if (confirm('Eliminare questo messaggio?')) { await fetchAPI(`/api/admin/contacts/${id}`, { method: 'DELETE' }); loadContacts() }
-    }
-
-    document.addEventListener('DOMContentLoaded', checkAuth)
+    check()
   </script>
 </body>
 </html>

@@ -3,163 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CyberGuard - Home</title>
+  <title>CyberGuard</title>
   <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-top">
-      <div class="container">
-        <div class="header-top-inner">
-          <span>Piattaforma di Cybersecurity</span>
-          <div class="header-top-links">
-            <a href="/contatti">Contatti</a>
-            <a href="/admin">Area riservata</a>
-          </div>
-        </div>
-      </div>
+  <nav class="nav">
+    <a href="/" class="nav-brand">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M16 6L26 12V20L16 26L6 20V12L16 6Z" stroke="white" stroke-width="2" fill="none"/><circle cx="16" cy="16" r="4" fill="white"/></svg>
+      CyberGuard
+    </a>
+    <div class="nav-links">
+      <a href="#about">Chi siamo</a>
+      <a href="#features">Funzionalità</a>
+      <a href="#news">News</a>
+      <a href="/admin" class="btn-nav">Admin</a>
     </div>
-    <div class="header-main">
-      <div class="container header-main-inner">
-        <a href="/" class="site-logo">
-          <div class="logo-mark"><i data-lucide="shield-check"></i></div>
-          <div class="logo-text">
-            <span class="logo-title">CyberGuard</span>
-            <span class="logo-subtitle">Cybersecurity per tutti</span>
-          </div>
-        </a>
-        <nav class="main-nav" id="main-nav">
-          <a href="/" class="active">Home</a>
-          <a href="/chi-siamo">Chi siamo</a>
-          <a href="/progetto">Il progetto</a>
-          <a href="/funzionalita">Funzionalità</a>
-          <a href="/risorse">Risorse</a>
-          <a href="/news">News</a>
-        </nav>
-        <button class="nav-toggle" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-  </header>
+  </nav>
 
-  <div class="breadcrumb">
+  <section class="hero">
     <div class="container">
-      <span>Ti trovi in:</span>
-      <a href="/">Home</a>
+      <div class="hero-badge">MAST Summer School 2026</div>
+      <h1 class="hero-title">Cybersecurity<br>fatta bene</h1>
+      <p class="hero-text">Una piattaforma educativa per imparare a difendersi nel mondo digitale. Quiz interattivi, moduli formativi e simulazioni realistiche.</p>
+      <div class="hero-cta">
+        <a href="#features" class="btn btn-primary">Inizia ora</a>
+        <a href="#about" class="btn">Scopri di più</a>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <main>
-    <section class="hero-home">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <h1>Impara a proteggerti nel mondo digitale</h1>
-            <p>CyberGuard è una piattaforma educativa sviluppata per sensibilizzare studenti e cittadini sulle tematiche della cybersecurity. Attraverso percorsi formativi interattivi, imparerai a riconoscere le minacce online e a proteggere la tua vita digitale.</p>
-            <div class="hero-actions">
-              <a href="/progetto" class="btn btn-primary">Scopri il progetto</a>
-              <a href="/funzionalita" class="btn btn-outline" style="color:white;border-color:white">Esplora le funzionalità</a>
-            </div>
-          </div>
-          <div class="hero-stats">
-            <div class="stat-box">
-              <strong>50+</strong>
-              <span>Quiz interattivi</span>
-            </div>
-            <div class="stat-box">
-              <strong>12</strong>
-              <span>Moduli formativi</span>
-            </div>
-            <div class="stat-box">
-              <strong>6</strong>
-              <span>Aree tematiche</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">In evidenza</h2>
-        <p class="section-subtitle">Le principali aree tematiche affrontate dalla piattaforma CyberGuard.</p>
-        <div class="grid-3" id="features-preview"></div>
-      </div>
-    </section>
-
-    <section class="section section-alt">
-      <div class="container">
-        <h2 class="section-title">Ultime news</h2>
-        <p class="section-subtitle">Aggiornamenti e novità dal team CyberGuard.</p>
-        <div class="news-list" id="news-preview"></div>
-        <div class="mt-2">
-          <a href="/news" class="btn btn-outline">Vedi tutte le news</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
+  <section id="about" class="section">
     <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <div class="footer-logo"><i data-lucide="shield-check"></i><span>CyberGuard</span></div>
-          <p>Piattaforma educativa per la cybersecurity, sviluppata durante il MAST Summer School 2026.</p>
+      <div class="section-intro">
+        <h2>Chi siamo</h2>
+        <p>Siamo studenti del MAST Summer School 2026. Abbiamo creato CyberGuard per rendere la cybersecurity accessibile a tutti.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-num">01</div>
+          <h3>Studenti</h3>
+          <p>Un team di ragazzi appassionati di tecnologia e sicurezza informatica.</p>
         </div>
-        <div class="footer-col">
-          <h4>Link utili</h4>
-          <ul>
-            <li><a href="/chi-siamo">Chi siamo</a></li>
-            <li><a href="/progetto">Il progetto</a></li>
-            <li><a href="/funzionalita">Funzionalità</a></li>
-            <li><a href="/risorse">Risorse</a></li>
-          </ul>
+        <div class="about-card">
+          <div class="about-num">02</div>
+          <h3>Formazione</h3>
+          <p>8 giorni intensivi di corsi, laboratori e progetti pratici.</p>
         </div>
-        <div class="footer-col">
-          <h4>Servizi</h4>
-          <ul>
-            <li><a href="/news">News</a></li>
-            <li><a href="/contatti">Contatti</a></li>
-            <li><a href="/admin">Area riservata</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Contatti</h4>
-          <ul>
-            <li><a href="mailto:cyberguard@example.it">cyberguard@example.it</a></li>
-          </ul>
+        <div class="about-card">
+          <div class="about-num">03</div>
+          <h3>Mission</h3>
+          <p>Diffondere la cultura della cybersecurity tra i giovani.</p>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>© 2026 CyberGuard - MAST Summer School 2026</p>
+    </div>
+  </section>
+
+  <section id="features" class="section section-dark">
+    <div class="container">
+      <div class="section-intro">
+        <h2>Cosa impari</h2>
+        <p>Tutto quello che devi sapere per proteggerti online.</p>
       </div>
+      <div class="features-grid" id="features-grid"></div>
+    </div>
+  </section>
+
+  <section id="news" class="section">
+    <div class="container">
+      <div class="section-intro">
+        <h2>News</h2>
+        <p>Aggiornamenti e novità dal progetto.</p>
+      </div>
+      <div class="news-grid" id="news-grid"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>CyberGuard — MAST Summer School 2026</p>
     </div>
   </footer>
 
   <script src="/js/main.js"></script>
-  <script>
-    async function loadHome() {
-      try {
-        const [features, news] = await Promise.all([
-          fetchAPI('/api/features'),
-          fetchAPI('/api/news')
-        ])
-
-        const featuresPreview = document.getElementById('features-preview')
-        featuresPreview.innerHTML = features.slice(0, 3).map(createFeatureCard).join('')
-
-        const newsPreview = document.getElementById('news-preview')
-        newsPreview.innerHTML = news.slice(0, 2).map(createNewsCard).join('')
-
-        lucide.createIcons()
-      } catch (err) {
-        console.error('Errore caricamento home:', err)
-      }
-    }
-    document.addEventListener('DOMContentLoaded', loadHome)
-  </script>
 </body>
 </html>
